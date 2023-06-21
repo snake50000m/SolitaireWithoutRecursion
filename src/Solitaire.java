@@ -1,10 +1,12 @@
 public class Solitaire {
     private Board board = new Board();
-    int sol = Heuristic(board);
-    private Board[] solution = new Board[sol + 1];
+    private int sol;
+    private Board[] solution;
     private int[] directions = board.getDirection();
 
     public Solitaire() {
+        sol = Heuristic(board);
+        solution = new Board[sol + 1];
         for (int i = 0; i < solution.length; i++) {
             solution[i] = new Board();
         }
@@ -28,8 +30,7 @@ public class Solitaire {
                 for (int direction : directions) {
                     if (board.jump(x, y, direction)) {
                         board.copy(board, solution[step]);
-                        solution[step].print();
-                        if (!((Heuristic(board) == 0) /*&& board.isOccupied(3, 3)*/)) {
+                        if (!((Heuristic(board) == 0) && board.isOccupied(3, 3))) {
                             if (finalSol(step + 1)) return true;
                             else board.goBack(x, y, direction);
                         } else return true;
@@ -40,24 +41,12 @@ public class Solitaire {
         return false;
     }
 
-    public void solvePuzzle() {
-        System.out.println(solution.length);
-        for (int i = 0; i < solution.length; i++) {
-            solution[i].print();
-        }
-    }
-
-    int count;
-    String from, to;
-
     public void path() {
         Board[] pathBoard = solution;
-        // for (int j = 0; j < solution.length; j++) {
-        //   solution[j].print();
         for (int i = 0; i < pathBoard.length - 1; i++) {
-            count = 0;
-            to = "0";
-            from = "0";
+            int count = 0;
+            String to = "0";
+            String from = "0";
             for (int x = 0; x < board.board.length; x++) {
                 for (int y = 0; y < board.board.length; y++) {
                     if (pathBoard[i].board[x][y] == 'X' && pathBoard[i + 1].board[x][y] == 'o') {
@@ -81,7 +70,7 @@ public class Solitaire {
                                 to = board.numberBoard[x][y + 2];
                             }
                         }
-                        if (to != "0") {
+                        if (!to.equals("0")) {
                             from = board.numberBoard[x][y];
                             count++;
                             break;
@@ -95,7 +84,6 @@ public class Solitaire {
             System.out.println(i + 1 + ")\t\t(" + from + "," + to + ") ");
             if (i == pathBoard.length - 2) solution[i + 1].print();
         }
-        //}
     }
-};
+}
 
