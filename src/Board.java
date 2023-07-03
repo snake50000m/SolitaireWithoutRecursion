@@ -23,6 +23,12 @@ public class Board {
             {' ', ' ', 'X', 'X', 'X', ' ', ' '},
             {' ', ' ', 'X', 'X', 'X', ' ', ' '}
 
+//            {'o', 'o', 'X', 'o', 'o',},
+//            {'o', 'X', 'X', 'X', 'o',},
+//            {'o', 'o', 'X', 'o', 'o',},
+//            {'o', 'o', 'X', 'o', 'o',},
+//            {'o', 'o', 'o', 'o', 'o',}
+
 //            {' ', ' ', 'o', 'o', 'o', ' ', ' '},
 //            {' ', ' ', 'o', 'X', 'o', ' ', ' '},
 //            {'o', 'o', 'X', 'X', 'X', 'o', 'o'},
@@ -39,8 +45,16 @@ public class Board {
 //            {' ', ' ', 'o', 'o', 'o', ' ', ' '},
 //            {' ', ' ', 'o', 'o', 'o', ' ', ' '}
 
+//            {' ', ' ', 'X', 'o', 'X', ' ', ' '},
+//            {' ', ' ', 'X', 'X', 'X', ' ', ' '},
+//            {'X', 'X', 'o', 'X', 'o', 'X', 'X'},
+//            {'o', 'X', 'X', 'X', 'X', 'X', 'o'},
+//            {'X', 'X', 'o', 'X', 'o', 'X', 'X'},
+//            {' ', ' ', 'X', 'X', 'X', ' ', ' '},
+//            {' ', ' ', 'X', 'o', 'X', ' ', ' '}
+
     };
-    String[][] numberBoard = {
+    String[][] сoordinates = {
             {"A1", "B1", "C1", "D1", "E1", "F1", "G1"},
             {"A2", "B2", "C2", "D2", "E2", "F2", "G2"},
             {"A3", "B3", "C3", "D3", "E3", "F3", "G3"},
@@ -49,6 +63,19 @@ public class Board {
             {"A6", "B6", "C6", "D6", "E6", "F6", "G6"},
             {"A7", "B7", "C7", "D7", "E7", "F7", "G7"}
     };
+
+    public boolean move(int x, int y, int direction) {
+        int newX = getNewX(x, direction);
+        int newY = getNewY(y, direction);
+        if (isValidMove(x, y, newX, newY)) {
+            board[newX][newY] = BUSY;
+            board[x][y] = EMPTY;
+            board[(x + newX) / 2][(y + newY) / 2] = EMPTY;
+
+            return true;
+        }
+        return false;
+    }
 
     private int getNewX(int x, int direction) {
         int newX = x;
@@ -74,19 +101,6 @@ public class Board {
                 board[x][y] == BUSY;
     }
 
-    public boolean move(int x, int y, int direction) {
-        int newX = getNewX(x, direction);
-        int newY = getNewY(y, direction);
-        if (isValidMove(x, y, newX, newY)) {
-            board[newX][newY] = BUSY;
-            board[x][y] = EMPTY;
-            board[(x + newX) / 2][(y + newY) / 2] = EMPTY;
-
-            return true;
-        }
-        return false;
-    }
-
     public void copy(Board source, Board target) {
         for (int x = 0; x < board.length; x++) {
             for (int y = 0; y < board.length; y++) {
@@ -95,7 +109,7 @@ public class Board {
         }
     }
 
-    public boolean isOccupied(int x, int y) {
+    public boolean isBusy(int x, int y) {
         return board[x][y] == BUSY;
     }
 
@@ -115,7 +129,7 @@ public class Board {
         }
         System.out.println();
         for (int x = 0; x < board.length; x++) {
-            System.out.print("\u001B[31m" + (x+1) + "\u001B[0m ");
+            System.out.print("\u001B[31m" + (x + 1) + "\u001B[0m ");
             for (int y = 0; y < board.length; y++) {
                 System.out.printf("%3s", board[x][y]);
             }
