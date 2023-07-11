@@ -8,7 +8,7 @@ public class Board {
     private static final int UP = 1;
     private static final int LEFT = 2;
     private static final int DOWN = 3;
-    private static int[] direction = {RIGHT, UP, LEFT, DOWN};
+    private static final int[] direction = {RIGHT, UP, LEFT, DOWN};
 
     public int[] getDirection() {
         return Arrays.copyOf(direction, direction.length);
@@ -71,7 +71,6 @@ public class Board {
             board[newX][newY] = BUSY;
             board[x][y] = EMPTY;
             board[(x + newX) / 2][(y + newY) / 2] = EMPTY;
-
             return true;
         }
         return false;
@@ -119,22 +118,5 @@ public class Board {
         board[newX][newY] = EMPTY;
         board[x][y] = BUSY;
         board[(x + newX) / 2][(y + newY) / 2] = BUSY;
-    }
-
-    public void print() {
-        char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G'};
-        System.out.print("\t");
-        for (int i = 0; i < letters.length; i++) {
-            System.out.printf("\u001B[31m%-3s\u001B[0m", letters[i]);
-        }
-        System.out.println();
-        for (int x = 0; x < board.length; x++) {
-            System.out.print("\u001B[31m" + (x + 1) + "\u001B[0m ");
-            for (int y = 0; y < board.length; y++) {
-                System.out.printf("%3s", board[x][y]);
-            }
-            System.out.println();
-        }
-        System.out.println();
     }
 }
